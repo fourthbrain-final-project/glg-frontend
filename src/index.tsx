@@ -1,13 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { Header, Home } from './components';
+import { About, Header, Home } from './components';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom" ;
 
 ReactDOM.render(
   <React.StrictMode>
-    <Header />
-    <Home />
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/about" element={<About />}></Route>
+      </Routes>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

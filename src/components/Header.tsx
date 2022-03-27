@@ -10,15 +10,22 @@ class Header extends React.Component<React.HtmlHTMLAttributes<HTMLDivElement>> {
                 fontFamily: "Source Code Pro"
             }}>
                 <div className="navbar-brand">
-                    <a className="navbar-item" href="">
+                    <a className="navbar-item" href="/">
                         <FontAwesomeIcon icon={faComment} />
                         <p className="is-size-4" style={{
                             paddingLeft: '10px'
                         }}>FLUENTLY</p>
                         
                     </a>
+                    <div className="navbar-end" style={{
+                        paddingRight: "10px"
+                    }}>
+                        <a className="navbar-item" href="/about">
+                            About
+                        </a>
+                    </div>
                 </div>
-               
+
                 <div className="hero-body" style={{
                      backgroundImage: "url(banner.jpeg)",
                      backgroundPosition: "center center"
