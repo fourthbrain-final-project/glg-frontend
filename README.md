@@ -47,5 +47,5 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Current State Frontend
 
-![Frontend](frontend_ss.png)
+![Frontend](./frontend_ss.png)
 
