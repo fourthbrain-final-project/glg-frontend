@@ -10,6 +10,7 @@ class Home extends React.Component<React.HTMLAttributes<HTMLDivElement>> {
             <div className="container is-centered">
                 <br />
                 <br />
+                <br />
                 <div className="level">
                     <div className="level-item">
                         <div className="field has-addons">
