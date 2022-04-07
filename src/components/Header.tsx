@@ -37,9 +37,9 @@ class Header extends React.Component<React.HtmlHTMLAttributes<HTMLDivElement>> {
                                     color: "white",
                                     fontFamily: "Source Code Pro"
                                 }}>
-                                    <text>
+                                    <p>
                                         NLP insights; <br /> for everyone
-                                    </text>
+                                    </p>
                                 </div>
                             </div>
                         </div>                        

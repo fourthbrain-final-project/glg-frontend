@@ -1,5 +1,4 @@
 import React from "react";
-import { Component } from "react";
 
 class About extends React.Component<React.HTMLAttributes<HTMLDivElement>> {
     render() {
