@@ -17,6 +17,7 @@ const Home = () => {
                 <br />
                 <br />
                 <br />
+                <section>
                 <div className="level">
                     <div className="level-item">
                         <div className="field has-addons">
@@ -32,6 +33,8 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
+                </section>
+                
             </div>
     );
 }
