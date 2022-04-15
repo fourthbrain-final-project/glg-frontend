@@ -1,4 +1,7 @@
 body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Source Code Pro',
     sans-serif;
@@ -6,13 +9,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
+footer{ min-height:50px }
+
 .hero-body {
   background-image: 'url(banner.jpeg)';
   background-size: cover;
+}
+
+.site {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-content {
+  flex: 1
+}
+
+#wrapper {
+  flex: 1;
 }

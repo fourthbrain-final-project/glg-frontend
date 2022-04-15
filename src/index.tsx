@@ -17,8 +17,8 @@ ReactDOM.render(
         <Route path="/results" element={<Results document=''/>}></Route>
       </Routes>
       </GlobalStateProvider>
-      <Footer />
     </Router>
+    <Footer />
   </React.StrictMode>,
   document.getElementById('root')
 );

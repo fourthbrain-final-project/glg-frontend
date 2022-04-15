@@ -27,7 +27,7 @@ export const Results: FunctionComponent<Content> = ({ document }) => {
         <div>
             <br />        
             <br />
-            <RelevantAgent uri="male_agent.jpeg" phone="222-333-4444" email="test@fluently.dev" info="Healthcare expert" />
+            <RelevantAgent uri="male_agent.jpeg" phone="222-333-4444" email="test@fluently.dev" name="Namey Namerson" info="Healthcare expert" />
             <br />
             <div className="container">
                 <div className="columns">
@@ -55,6 +55,8 @@ export const Results: FunctionComponent<Content> = ({ document }) => {
                     </div>
                 </div>
             </div>
+            <br />
+            <br />
         </div>
     )
 }
@@ -63,31 +65,53 @@ type Agent = {
     uri: string,
     phone: string,
     email: string,
-    info: string 
+    name: string,
+    info: string
 }
 
-const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, info}) => {
+const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info}) => {
     return (
-        <div className="container is-widescreen">
-                <div className="box" style={{
-                    backgroundColor: "#933A16",
-                    color: "white",
-                    opacity: 0.9
-                }}>        
-                    <div className="media">
-                        <div className="media-content">
-                            <div className="article" style={{
-                                fontFamily: "Source Code Pro"
-                            }}>
-                                <p>
-                                    This is  a dummy article; you mentioned <mark>covid</mark> so it was flagged. You also mentioned <mark>asthma</mark>
+        <div className="container">
+            <div className="columns">
+                <div className="column is-one-fifth">
+                    <div className="card" style={{
+                        fontFamily: "Source Code Pro",
+                        color: "black"
+                    }}>
+                        <div className="card-image">
+                                <figure className="image is-4by3">
+                                    <img src={uri} alt="alt text" />
+                                </figure>
+                        </div>
+                        <div className="card-content is-size-7" style={{
+                            fontFamily: "Source Code Pro",
+                            backgroundColor: "#933A16",
+                            opacity: 0.8,
+                            color: "white"
+                        }}>
+                            <div className="level">
+                                <p className="">
+                                    <div className="level-item level-left">
+                                        Agent:&nbsp;{name}
+                                    </div>
+                                    <div className="level-item level-left">
+                                        Phone:&nbsp;{phone}
+                                    </div>
+                                    <div className="level-item level-left">
+                                        Email:&nbsp;{email}
+                                    </div>
                                 </p>
                             </div>
                         </div>
-                        <div className="media"></div>    
                     </div>
+                </div>
+                <div className="column">
+                    another column hopefully much larger than the last one making this text extra long to test that theory 
+                </div>
+
             </div>
-        </div>       
+        </div>
+        
     )
 }
 

@@ -4,15 +4,15 @@ import { Component } from "react";
 class Footer extends React.Component<React.HTMLAttributes<HTMLDivElement>> {
     render() {
         return (
-            <div className="hero is-medium" style={{
-                backgroundColor: "#933A16",
-                opacity: 0.7,
-                position: "fixed",
-                bottom: 0,
-                left: 0,
-                width: "100%"
-              }}>
-                  <div className="hero-foot">
+            <div className="hero is-medium">
+                  <div className="hero-foot" style={{
+                      backgroundColor: "#933A16",
+                      opacity: 0.7,
+                      position: "fixed",
+                      bottom: 0,
+                      left: 0,
+                      width: "100%"
+                  }}>
                     <div className="level">
                             <div className="level-item">
                                 <p className="is-size-10" style={{
