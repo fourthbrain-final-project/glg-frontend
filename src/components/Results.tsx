@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from 'victory' ;
+import { VictoryAxis, VictoryTheme, VictoryBar, VictoryChart, VictoryLabel, VictoryLine } from 'victory' ;
 
 type Content = {
     document: string
@@ -61,14 +61,49 @@ export const Results: FunctionComponent<Content> = ({ document }) => {
     )
 }
 
-type Topic = {
-    topic: string,
-    series: number[]
+type Series = {
+    x: number,
+    y: number
 }
 
-const TopicTimeSeries: FunctionComponent<Topic[]> = ([{}]) => {
+type Topic = {
+    topic: string,
+    stroke: string,
+    series: Series[]
+}
+
+type Topics = {
+    topics: Topic[]
+}
+
+
+const TopicTimeSeries: FunctionComponent<Topics> = ({topics}) : JSX.Element => {
     return (
-        <div></div>
+            <div className="box">
+                    <VictoryChart
+                    theme={VictoryTheme.material}
+                    height={200}
+                    width={300}
+                    >
+                    {
+                        topics.map( topic => 
+                        {
+                            return (
+                                <VictoryLine 
+                                    style={{
+                                        data: { stroke: topic.stroke},
+                                        parent: { border: "1px solid #ccc"}
+                                    }}
+                                    name={topic.topic}
+                                    interpolation="natural"
+                                    data={topic.series}
+                                />
+                            )
+                        })
+                    }
+                </VictoryChart>
+            </div>
+        
     )
 } 
 
@@ -85,39 +120,46 @@ const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info}
         <div className="container">
             <div className="columns">
                 <div className="column is-one-fifth">
-                    <div className="box" style={{
+                    <div className="tile is-ancestor">
+                        <div className="tile">
+                        <div className="box" style={{
                             fontFamily: "Source Code Pro",
                             color: "black"
                         }}>
-                        <div className="card">
-                            <div className="card-image">
-                                                                     
-                                    <figure className="image is-4by3">
-                                        <img src={uri} alt="alt text" />
-                                    </figure>
-                            </div>
-                            <div className="card-content is-size-7" style={{
-                                fontFamily: "Source Code Pro",
-                                backgroundColor: "#933A16",
-                                opacity: 0.8,
-                                color: "white"
-                            }}>
-                                <div className="level">
-                                    <p className="">
-                                        <div className="level-item level-left">
-                                            Agent:&nbsp;{name}
-                                        </div>
-                                        <div className="level-item level-left">
-                                            Phone:&nbsp;{phone}
-                                        </div>
-                                        <div className="level-item level-left">
-                                            Email:&nbsp;{email}
-                                        </div>
-                                    </p>
+                            <div className="card">
+                                <div className="card-image">
+                                                                        
+                                        <figure className="image is-4by3">
+                                            <img src={uri} alt="alt text" />
+                                        </figure>
+                                </div>
+                                <div className="card-content is-size-7" style={{
+                                    fontFamily: "Source Code Pro",
+                                    backgroundColor: "#933A16",
+                                    opacity: 0.8,
+                                    color: "white"
+                                }}>
+                                    <div className="level">
+                                        <p className="">
+                                            <div className="level-item level-left">
+                                                Agent:&nbsp;{name}
+                                            </div>
+                                            <div className="level-item level-left">
+                                                Phone:&nbsp;{phone}
+                                            </div>
+                                            <div className="level-item level-left">
+                                                Email:&nbsp;{email}
+                                            </div>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
+                </div>
+                <div className="column">
+                    <TopicTimeSeries topics={[{topic:"test" , stroke:"#c43a31", series:[{x:0, y:2}, {x:1, y:3}]}, {topic:"new", stroke:"black", series:[{x:0,y:2},{x:1,y:0}]}]} />
                 </div>
                 <div className="column">
                     another column hopefully much larger than the last one making this text extra long to test that theory 
