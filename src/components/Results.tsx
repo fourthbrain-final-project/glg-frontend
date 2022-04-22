@@ -79,11 +79,9 @@ type Topics = {
 
 const TopicTimeSeries: FunctionComponent<Topics> = ({topics}) : JSX.Element => {
     return (
-            <div className="box">
+            
                     <VictoryChart
-                    theme={VictoryTheme.material}
-                    height={200}
-                    width={300}
+                    theme={VictoryTheme.material}        
                     >
                     {
                         topics.map( topic => 
@@ -102,7 +100,7 @@ const TopicTimeSeries: FunctionComponent<Topics> = ({topics}) : JSX.Element => {
                         })
                     }
                 </VictoryChart>
-            </div>
+            
         
     )
 } 
@@ -118,56 +116,57 @@ type Agent = {
 const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info}) => {
     return (
         <div className="container">
-            <div className="columns">
+            <div className="columns is-mulitline">
                 <div className="column is-one-fifth">
-                    <div className="tile is-ancestor">
-                        <div className="tile">
-                        <div className="box" style={{
-                            fontFamily: "Source Code Pro",
-                            color: "black"
-                        }}>
+                    
+                            <div className="panel">
+                                <div className="panel-block">
+                                <div className="card">
+                                    <div className="card-image">                          
+                                            <figure className="image">
+                                                <img src={uri} alt="alt text" />
+                                            </figure>
+                                    </div>
+                                    <div className="card-content is-size-7" style={{
+                                        fontFamily: "Source Code Pro",
+                                        backgroundColor: "#933A16",
+                                        opacity: 0.8,
+                                        color: "white"
+                                    }}>
+                                        <div className="level">
+                                            <p className="">
+                                                <div className="level-item level-left">
+                                                    Agent:&nbsp;{name}
+                                                </div>
+                                                <div className="level-item level-left">
+                                                    Phone:&nbsp;{phone}
+                                                </div>
+                                                <div className="level-item level-left">
+                                                    Email:&nbsp;{email}
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                                
+                </div>
+                <div className="column">
+                    <div className="panel">
+                        <div className="panel-block">
                             <div className="card">
                                 <div className="card-image">
-                                                                        
-                                        <figure className="image is-4by3">
-                                            <img src={uri} alt="alt text" />
-                                        </figure>
-                                </div>
-                                <div className="card-content is-size-7" style={{
-                                    fontFamily: "Source Code Pro",
-                                    backgroundColor: "#933A16",
-                                    opacity: 0.8,
-                                    color: "white"
-                                }}>
-                                    <div className="level">
-                                        <p className="">
-                                            <div className="level-item level-left">
-                                                Agent:&nbsp;{name}
-                                            </div>
-                                            <div className="level-item level-left">
-                                                Phone:&nbsp;{phone}
-                                            </div>
-                                            <div className="level-item level-left">
-                                                Email:&nbsp;{email}
-                                            </div>
-                                        </p>
-                                    </div>
+                                    <figure className="image">
+                                        <TopicTimeSeries topics={[{topic:"test" , stroke:"#c43a31", series:[{x:0, y:2}, {x:1, y:3}]}, {topic:"new", stroke:"black", series:[{x:0,y:2},{x:1,y:0}]}]} />
+                                    </figure>
                                 </div>
                             </div>
                         </div>
-                        </div>
                     </div>
                 </div>
-                <div className="column">
-                    <TopicTimeSeries topics={[{topic:"test" , stroke:"#c43a31", series:[{x:0, y:2}, {x:1, y:3}]}, {topic:"new", stroke:"black", series:[{x:0,y:2},{x:1,y:0}]}]} />
-                </div>
-                <div className="column">
-                    another column hopefully much larger than the last one making this text extra long to test that theory 
-                </div>
-
-            </div>
+            </div>               
         </div>
-        
     )
 }
 
