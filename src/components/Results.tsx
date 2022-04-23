@@ -34,23 +34,33 @@ export const Results: FunctionComponent<Content> = ({ document }) => {
                     <div className="column is-two-thirds" style={{
                         fontFamily:"Source Code Pro"
                     }}>
-                        <div className="box" style={{
+                        <div className="panel">
+                            <p className="panel-heading has-text-centered" style={{
+                                backgroundColor: "#933A16",
+                                opacity: 0.8,
+                                color: "white"
+                            }}>
+                                Topics
+                            </p>
+                            <div className="panel-content">
+                                <VictoryChart
+                                        domainPadding={{ x: 10}}
+                                        padding={{ left: 90, top: 70, right: 50, bottom: 50}}
+                                        >
+                                        <VictoryBar horizontal
+                                            style={{
+                                                data: {fill: "#933A16"},
+                                                labels: {
+                                                    fontFamily: "Source Code Pro"
+                                                }
+                                            }}
+                                            data={data}
+                                            x="word"
+                                            y="count"
+                                        />
+                                </VictoryChart>
+                            </div>
                             
-                        }}>
-                            <VictoryChart
-                                    domainPadding={{ x: 10}}
-                                    padding={{ left: 90, top: 70, right: 50, bottom: 50}}
-                                    >
-                                    <VictoryLabel text="Topics" textAnchor="middle" x={225} y={30} />
-                                    <VictoryBar horizontal
-                                        style={{
-                                            data: {fill: "#933A16"}
-                                        }}
-                                        data={data}
-                                        x="word"
-                                        y="count"
-                                    />
-                            </VictoryChart>
                         </div>
                     </div>
                 </div>
@@ -62,7 +72,7 @@ export const Results: FunctionComponent<Content> = ({ document }) => {
 }
 
 type Series = {
-    x: number,
+    x: string,
     y: number
 }
 
@@ -81,7 +91,7 @@ const TopicTimeSeries: FunctionComponent<Topics> = ({topics}) : JSX.Element => {
     return (
             
                     <VictoryChart
-                    theme={VictoryTheme.material}        
+                    theme={VictoryTheme.material}     
                     >
                     {
                         topics.map( topic => 
@@ -90,7 +100,10 @@ const TopicTimeSeries: FunctionComponent<Topics> = ({topics}) : JSX.Element => {
                                 <VictoryLine 
                                     style={{
                                         data: { stroke: topic.stroke},
-                                        parent: { border: "1px solid #ccc"}
+                                        parent: { border: "1px solid #ccc"},
+                                        labels: {
+                                            fontFamily: "Source Code Pro"
+                                        }
                                     }}
                                     name={topic.topic}
                                     interpolation="natural"
@@ -115,11 +128,14 @@ type Agent = {
 
 const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info}) => {
     return (
-        <div className="container">
+        <div className="container" style={{
+            fontFamily: "Source Code Pro"
+        }}>
             <div className="columns is-mulitline">
                 <div className="column is-one-fifth">
                     
                             <div className="panel">
+                                
                                 <div className="panel-block">
                                 <div className="card">
                                     <div className="card-image">                          
@@ -154,17 +170,23 @@ const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info}
                 </div>
                 <div className="column">
                     <div className="panel">
-                        <div className="panel-block">
-                            <div className="card">
-                                <div className="card-image">
-                                    <figure className="image">
-                                        <TopicTimeSeries topics={[{topic:"test" , stroke:"#c43a31", series:[{x:0, y:2}, {x:1, y:3}]}, {topic:"new", stroke:"black", series:[{x:0,y:2},{x:1,y:0}]}]} />
+                        <p className="panel-heading has-text-centered" style={{
+                             backgroundColor: "#933A16",
+                             opacity: 0.8,
+                             color: "white"
+                        }}>
+                            Topic Usage
+                        </p>
+                        <div className="panel-block is-justify-content-center">
+                            
+                                    <figure className="image is-inline-block">
+                                        <TopicTimeSeries topics={[{topic:"test" , stroke:"#c43a31", series:[{x:"Monday", y:2}, {x:"Tuesday", y:3}]}, {topic:"new", stroke:"black", series:[{x:"Monday",y:2},{x:"Tuesday",y:0}]}]} />
                                     </figure>
-                                </div>
-                            </div>
+                                                                                                              
                         </div>
                     </div>
                 </div>
+                <div className="column"></div>
             </div>               
         </div>
     )
