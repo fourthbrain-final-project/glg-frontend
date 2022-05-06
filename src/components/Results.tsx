@@ -1,8 +1,11 @@
-import React, { FunctionComponent } from "react";
+import React, {useEffect, useState, FunctionComponent } from "react";
 import { VictoryAxis, VictoryTheme, VictoryBar, VictoryChart, VictoryLabel, VictoryLine } from 'victory' ;
+import { useGlobalState } from "../GlobalStateProvider";
+
+import axios from 'axios' ;
 
 type Content = {
-    document: string
+    document_content: string
 }
 
 type Word = {
@@ -14,15 +17,52 @@ type Words = {
     words: Word[]
 }
 
-const data = [
+const sample_data = [
     {word: "disease", count: 2},
     {word: "polio", count: 4},
     {word: "inhaler", count: 7},
     {word: "covid", count: 10}        
 ];
 
-export const Results: FunctionComponent<Content> = ({ document }) => {
-    
+const instance = axios.create({
+    baseURL: 'https://127.0.0.1:8443/',
+    timeout: 500,
+    headers: {'Accept': 'application/json'}
+})
+
+type DocumentPostReturn = {
+    status_code: number ,
+    status_message: String,
+    message_id: String,
+}
+
+export const Results = () => {
+    const [loading, setLoading] = useState(true) ;
+    const [postDocumentReturn, setPostDocumentReturn] = useState({}) ;
+
+    let globalState = useGlobalState() ;
+
+    useEffect(() => {
+        console.log("document content") ;
+        console.log(globalState.state.document) ;
+        const postDocument = async () => {
+            await instance.post(
+                '/document', 
+                {document_content: globalState.state.document}
+            )
+            .then((response) => response.data)
+            .then((data) => {
+                setPostDocumentReturn({status_code: data.code, status_message: data.message, message_id: data.job_id}) ;
+                console.log(postDocumentReturn) ;
+            })
+            .catch((error) => {
+                console.log(error) ;
+            })
+        }
+
+        postDocument() ;
+    }, []);
+
     return (
         <div>
             <br />        
@@ -54,7 +94,7 @@ export const Results: FunctionComponent<Content> = ({ document }) => {
                                                     fontFamily: "Source Code Pro"
                                                 }
                                             }}
-                                            data={data}
+                                            data={sample_data}
                                             x="word"
                                             y="count"
                                         />
@@ -150,17 +190,21 @@ const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info}
                                         color: "white"
                                     }}>
                                         <div className="level">
-                                            <p className="">
-                                                <div className="level-item level-left">
+                                            <div>
+                                                <p className="level-item level-left">
                                                     Agent:&nbsp;{name}
-                                                </div>
-                                                <div className="level-item level-left">
+                                                </p>
+                                                
+                                                <p className="level-item level-left">
                                                     Phone:&nbsp;{phone}
-                                                </div>
-                                                <div className="level-item level-left">
+                                                </p>
+                                                
+                                                <p className="level-item level-left">
                                                     Email:&nbsp;{email}
-                                                </div>
-                                            </p>
+                                                </p>
+
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>

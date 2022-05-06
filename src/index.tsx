@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { About, Header, Home, Footer, Results} from './components';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom" ;
 import { GlobalStateProvider } from "./GlobalStateProvider";
+
+
+
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,7 +17,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
-        <Route path="/results" element={<Results document=''/>}></Route>
+        <Route path="/results" element={<Results />}></Route>
       </Routes>
       </GlobalStateProvider>
     </Router>

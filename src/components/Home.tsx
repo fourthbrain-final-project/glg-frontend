@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useGlobalState } from "../GlobalStateProvider" ;
+
 
 const Home = () => {
     let navigate = useNavigate() ;
-    
-     const handleKeyDown = (e: React.KeyboardEvent) => {
+    let globalState = useGlobalState() ;
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
-            navigate('/results') ;
+            if(globalState.state.document !== "") {   
+                navigate('/results') ;
+            } else {
+
+            } ;
         }
     }
 
+    const updateDocument = (evt: React.ChangeEvent<HTMLInputElement>) => {
+        if(evt != null) {
+            globalState.setState({document: evt.target.value})
+        }  
+    }
+   
     return (
         <div className="container is-centered">
                 <br />
@@ -24,7 +37,7 @@ const Home = () => {
                             <p className="control has-icons-left" style={{
                                 fontFamily: "Source Code Pro" 
                             }}>
-                                <input className="input is-rounded is-full" type="text" size={80} placeholder="Document Content" onKeyPress={handleKeyDown}/>
+                                <input className="input is-rounded is-full" type="text" size={80} placeholder="Document Content" onKeyPress={handleKeyDown} onChange={updateDocument}/>
                                 <span className="icon is-left">
                                     <FontAwesomeIcon icon={faBook} />
                                 </span>
