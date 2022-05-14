@@ -43,7 +43,7 @@ ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
 # --------
 # Steps to push the container to container registry
-# IMAGE_URI=f"gcr.io/fouthbrain-capstone-2022/glg-frontend:v1"
+# IMAGE_URI="gcr.io/fouthbrain-capstone-2022/glg-frontend:v1"
 # docker build -t react-ui .
 # docker tag react-ui $IMAGE_URI
 # docker push $IMAGE_URI
