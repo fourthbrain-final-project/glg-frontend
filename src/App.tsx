@@ -1,25 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { About, Hero, Header, Home, Footer, Results} from './components';
+import { useAuth0 } from "@auth0/auth0-react";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
-  return (
-    <div className="App">
-     
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-    </div>
-  );
+  const { isAuthenticated } = useAuth0();
+    return(
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<><Hero /><Home /></>}></Route>
+          <Route path="/about" element={<><Hero /><About /></>}></Route>
+          <Route path="/results" element={<Results />}></Route>
+        
+        </Routes>
+      </BrowserRouter>
+    );
 }
 
 export default App;

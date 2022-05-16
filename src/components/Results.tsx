@@ -64,12 +64,12 @@ export const Results = () => {
     }, []);
 
     return (
-        <div>
+        <div className="container is-fluid">
             <br />        
             <br />
             <RelevantAgent uri="male_agent.jpeg" phone="222-333-4444" email="test@fluently.dev" name="Namey Namerson" info="Healthcare expert" />
             <br />
-            <div className="container">
+            <div className="container is-fluid">
                 <div className="columns">
                     <div className="column is-two-thirds" style={{
                         fontFamily:"Source Code Pro"
@@ -168,7 +168,7 @@ type Agent = {
 
 const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info}) => {
     return (
-        <div className="container" style={{
+        <div className="container is-fluid" style={{
             fontFamily: "Source Code Pro"
         }}>
             <div className="columns is-mulitline">

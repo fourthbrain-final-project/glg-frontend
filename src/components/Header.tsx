@@ -2,50 +2,49 @@ import React from "react";
 import { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRocket, faComment } from "@fortawesome/free-solid-svg-icons";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from "react-router-dom";
+
+const LogoutButton = () => {
+    const { logout } = useAuth0();
+  
+    return (
+      <a className="navbar-item" onClick={() => logout({ returnTo: window.location.origin })}>
+        Logout
+      </a>
+    );
+  };
+
+const LoginButton = () => {
+    const { loginWithRedirect } = useAuth0();
+  
+    return <a className="navbar-item" onClick={() => loginWithRedirect()}>Login</a>;
+};
 
 class Header extends React.Component<React.HtmlHTMLAttributes<HTMLDivElement>> {
     render() {
         return (
-            <section className="hero is-halfheight" style={{
-                fontFamily: "Source Code Pro"
-            }}>
+            <nav className="navbar  has-shadow" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
-                    <a className="navbar-item" href="/">
-                        <FontAwesomeIcon icon={faComment} />
-                        <p className="is-size-4" style={{
-                            paddingLeft: '10px'
-                        }}>FLUENTLY</p>
-                        
-                    </a>
-                    <div className="navbar-end" style={{
-                        paddingRight: "10px"
-                    }}>
-                        <a className="navbar-item" href="/about">
-                            About
-                        </a>
+                    <div className="navbar-item ml-6">
+                        <Link to="/">
+                            <FontAwesomeIcon icon={faComment} size="2x" />
+                        </Link>
                     </div>
-                </div>
-
-                <div className="hero-body" style={{
-                     backgroundImage: "url(banner.jpeg)",
-                     backgroundPosition: "center center"
+                    
+                    <div className="navbar-item is-size-4">FLUENTLY</div>
+                    
+                </div> 
+                    
+                <div className="navbar-end" style={{
+                    paddingRight: "10px"
                 }}>
-                    <div className="container">
-                    <div className="level">
-                            <div className="level-item">
-                                <div className="hero-title is-size-1 has-text-weight-bold" style={{
-                                    color: "white",
-                                    fontFamily: "Source Code Pro"
-                                }}>
-                                    <p>
-                                        NLP insights; <br /> for everyone
-                                    </p>
-                                </div>
-                            </div>
-                        </div>                        
-                    </div>
+                    <Link className="navbar-item" to="/about">About</Link>
+                    <LoginButton />
+                    <LogoutButton />
                 </div>
-            </section>
+                
+            </nav>                
         )
     }
     

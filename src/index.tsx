@@ -1,32 +1,32 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { About, Header, Home, Footer, Results, LoginButton, LogoutButton} from './components';
+import { About, Header, Home, Footer, Results} from './components';
+import App from './App' ;
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom" ;
 import { GlobalStateProvider } from "./GlobalStateProvider";
 import { Auth0Provider } from "@auth0/auth0-react" ;
+import {RecoilRoot} from 'recoil' ;
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
+    
+    <GlobalStateProvider>
       <Auth0Provider
         domain="dev-2j9425tp.us.auth0.com"
         clientId="naSs6wCWGvtue07SbrdGyQsv2gjqN1Sx"
         redirectUri={window.location.origin}
-      >
-      <Header />
-      <LoginButton />
-      <GlobalStateProvider>
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/results" element={<Results />}></Route>
-      </Routes>
-      </GlobalStateProvider>
+      > 
+        
+            <App />
+          
+        
       </Auth0Provider>
-    </Router>
-    <Footer />
+      </GlobalStateProvider>
+      
+    
+    
   </React.StrictMode>,
   document.getElementById('root')
 );
