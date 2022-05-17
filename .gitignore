@@ -24,3 +24,5 @@ yarn-error.log*
 
 package-lock.json
 public/unicorn.png
+
+.ipynb_checkpoints
