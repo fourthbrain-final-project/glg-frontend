@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   const { isAuthenticated } = useAuth0();
-  if(isAuthenticated) {
+  
     return(
       <BrowserRouter>
         <Header />
@@ -16,18 +16,7 @@ function App() {
         
         </Routes>
       </BrowserRouter>
-    );
-  } else {
-    return (
-    <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/about" element={<><Hero /><About /></>}></Route>
-        </Routes>
-      </BrowserRouter>   
-    ) ;
-  }
-    
+    );    
 }
 
 export default App;
