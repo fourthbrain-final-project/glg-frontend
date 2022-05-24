@@ -11,22 +11,21 @@ import {RecoilRoot} from 'recoil' ;
 
 ReactDOM.render(
   <React.StrictMode>
-    
-    <GlobalStateProvider>
-      <Auth0Provider
-        domain="dev-2j9425tp.us.auth0.com"
-        clientId="naSs6wCWGvtue07SbrdGyQsv2gjqN1Sx"
-        redirectUri={window.location.origin}
-      > 
+    <RecoilRoot>
+      <GlobalStateProvider>
+        <Auth0Provider
+          domain="dev-2j9425tp.us.auth0.com"
+          clientId="naSs6wCWGvtue07SbrdGyQsv2gjqN1Sx"
+          redirectUri={window.location.origin}
+        > 
         
             <App />
           
         
-      </Auth0Provider>
+        </Auth0Provider>
       </GlobalStateProvider>
+  </RecoilRoot>
       
-    
-    
   </React.StrictMode>,
   document.getElementById('root')
 );

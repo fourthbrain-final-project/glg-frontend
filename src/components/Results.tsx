@@ -3,6 +3,7 @@ import { VictoryAxis, VictoryTheme, VictoryBar, VictoryChart, VictoryLabel, Vict
 import { useGlobalState } from "../GlobalStateProvider";
 
 import axios from 'axios' ;
+import { spawn } from "child_process";
 
 type Content = {
     document_content: string
@@ -26,7 +27,7 @@ const sample_data = [
 
 const instance = axios.create({
     baseURL: 'https://127.0.0.1:8443/',
-    timeout: 500,
+    timeout: 50000,
     headers: {'Accept': 'application/json'}
 })
 
@@ -36,38 +37,111 @@ type DocumentPostReturn = {
     message_id: String,
 }
 
+type Label = {
+    label: string
+}
+
+const agents = new Map([
+    ['technology', {uri: "male_agent.jpeg", phone: "222-333-4444", email: "test@fluently.dev", name: "Namey Namerson", info: "Technology expert"}],
+    ['health', {uri: "female_agent.jpeg", phone: "111-222-3333", email: "testagain@fluently.dev", name: "Another Name", info: "Health expert"}],
+    ['other', {uri: "other_agent.jpeg", phone: "333-444-5555", email: "testagainagain@fluently.dev", name: "Other Name", info: "Generalist"}]
+])
+
 export const Results = () => {
     const [loading, setLoading] = useState(true) ;
     const [postDocumentReturn, setPostDocumentReturn] = useState({}) ;
+    const [postTopics, setPostTopics] = useState({labels: [], scores: []}) ;
+    const [postEntities, setPostEntities] = useState({entities: []}) ;
+    const [barChartData, setBarChartData] = useState([{word: 'none', score: 0.1}]) ;
+    const [postClassifier, setPostClassifier] = useState({label: ''}) ;
+    const [currentAgent, setCurrentAgent] = useState() ;
 
     let globalState = useGlobalState() ;
 
-    useEffect(() => {
-        console.log("document content") ;
-        console.log(globalState.state.document) ;
-        const postDocument = async () => {
+    useEffect(() => {   
+        const postClassification = async () => {
             await instance.post(
-                '/document', 
-                {document_content: globalState.state.document}
+                '/classify',
+                {document: globalState.state.document}
             )
             .then((response) => response.data)
             .then((data) => {
-                setPostDocumentReturn({status_code: data.code, status_message: data.message, message_id: data.job_id}) ;
-                console.log(postDocumentReturn) ;
+                setPostClassifier({label: data.label});
+
+                const gatherTopics = async () => {
+                    await instance.post(
+                        '/topics',
+                        {document: globalState.state.document, topic: data.label}
+                    )
+                    .then((response) => response.data)
+                    .then((data) => {
+                        setPostTopics({labels: data.labels, scores: data.scores});
+                        console.log("topics: " + data.labels) ;
+        
+                        let numrows = data.labels.length ;
+                        let currentChartData = [] ;
+        
+                        for (var i = numrows - 1; i >= 0; i-=1) {
+                            currentChartData.push({word: data.labels[i], score: data.scores[i]});
+                        }
+        
+                        setBarChartData(currentChartData) ;
+                    })
+                    .catch((error) => {
+                        console.log(error) ;
+                    })
+                }
+                gatherTopics() ;
+                
+            })
+            .catch((error) => {
+                console.log(error) ;
+            })
+        }        
+        postClassification() ;
+
+        const gatherEntities = async () => {
+            await instance.post(
+                '/entities',
+                {document: globalState.state.document}
+            )
+            .then((response) => response.data)
+            .then((data) => {
+                setPostEntities({entities: data.entities});
+                console.log("entities: " + data.entities) ;
             })
             .catch((error) => {
                 console.log(error) ;
             })
         }
 
-        postDocument() ;
+        gatherEntities() ;
+
     }, []);
+    
+    const Tags = () => {
+        return (
+            <>
+                {postEntities.entities.map(name => <span className="tag">{name}</span>)}
+            </>
+            
+        )
+    }
+
+    const Agent = () => {
+        let agent = agents.get(postClassifier.label) || {uri: "other_agent.jpeg", phone: "333-444-5555", email: "testagainagain@fluently.dev", name: "Other Name", info: "Generalist"};
+        let label = postClassifier.label || 'other' ;  
+            return (
+                <RelevantAgent uri={agent.uri} phone={agent.phone} email={agent.email} name={agent.name} info={agent.info} label={label} tags={< Tags />}/>
+            ) ;
+        
+    }
 
     return (
         <div className="container is-fluid">
             <br />        
             <br />
-            <RelevantAgent uri="male_agent.jpeg" phone="222-333-4444" email="test@fluently.dev" name="Namey Namerson" info="Healthcare expert" />
+            <Agent />
             <br />
             <div className="container is-fluid">
                 <div className="columns">
@@ -91,16 +165,35 @@ export const Results = () => {
                                             style={{
                                                 data: {fill: "#933A16"},
                                                 labels: {
-                                                    fontFamily: "Source Code Pro"
+                                                    fontFamily: "Source Code Pro",
+                                                    fontSize: "10"
                                                 }
                                             }}
-                                            data={sample_data}
+                                            data={barChartData}
                                             x="word"
-                                            y="count"
+                                            y="score"
                                         />
                                 </VictoryChart>
                             </div>
                             
+                        </div>
+                    </div>
+                    <div className="column">
+                        <div className="panel">
+                            <p className="panel-heading has-text-centered" style={{
+                                    backgroundColor: "#933A16",
+                                    opacity: 0.8,
+                                    color: "white"
+                                }}>
+                                Submitted Query
+                            </p>
+                            <div className="panel-content is-flex-wrap-wrap">
+                                <div className="box">
+                                    <p>
+                                        {globalState.state.document}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -163,10 +256,12 @@ type Agent = {
     phone: string,
     email: string,
     name: string,
-    info: string
+    info: string,
+    label: string,
+    tags: JSX.Element
 }
 
-const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info}) => {
+const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info, label, tags}) => {
     return (
         <div className="container is-fluid" style={{
             fontFamily: "Source Code Pro"
@@ -175,6 +270,13 @@ const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info}
                 <div className="column is-one-fifth">
                     
                             <div className="panel">
+                                <p className="panel-heading has-text-centered" style={{
+                                        backgroundColor: "#933A16",
+                                        opacity: 0.8,
+                                        color: "white"
+                                    }}>
+                                    Agent
+                                </p>
                                 
                                 <div className="panel-block">
                                 <div className="card">
@@ -219,19 +321,29 @@ const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info}
                              opacity: 0.8,
                              color: "white"
                         }}>
-                            Topic Usage
+                            Topic
                         </p>
                         <div className="panel-block is-justify-content-center">
-                            
-                                    <figure className="image is-inline-block">
-                                        <TopicTimeSeries topics={[{topic:"test" , stroke:"#c43a31", series:[{x:"Monday", y:2}, {x:"Tuesday", y:3}]}, {topic:"new", stroke:"black", series:[{x:"Monday",y:2},{x:"Tuesday",y:0}]}]} />
-                                    </figure>
-                                                                                                              
+                            <div className="title is-1">{label}</div>                                                                                                              
                         </div>
                     </div>
                 </div>
-                <div className="column"></div>
-            </div>               
+                <div className="column">
+                    <div className="panel">
+                            <p className="panel-heading has-text-centered" style={{
+                                backgroundColor: "#933A16",
+                                opacity: 0.8,
+                                color: "white"
+                            }}>
+                                Named Entities
+                            </p>
+                            <div className="panel-block is-justify-content-center is-flex-wrap-wrap">
+                                { tags }
+                            </div>
+                        </div> 
+                </div>
+            </div> 
+                          
         </div>
     )
 }
