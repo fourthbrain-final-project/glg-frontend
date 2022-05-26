@@ -146,11 +146,11 @@ export const Results = () => {
             <br />
             <div className="container is-fluid">
                 <div className="columns is-centered">
-                    <div className="column is-centered is-two-thirds" style={{
+                    <div className="column is-centered is-four-fifths" style={{
                         fontFamily:"Source Code Pro"
                     }}>
                         <div className="panel">
-                            <p className="panel-heading has-text-centered" style={{
+                            <p className="panel-heading has-text-centered is-size-3" style={{
                                 backgroundColor: "#933A16",
                                 opacity: 0.8,
                                 color: "white"
@@ -166,14 +166,17 @@ export const Results = () => {
                                             style={{
                                                 data: {fill: "#933A16"},
                                                 labels: {
+                                                    fontSize: 2,
                                                     fontFamily: "Source Code Pro",
-                                                    fontSize: "10"
+                                                    
                                                 }
                                             }}
                                             data={barChartData}
                                             x="word"
                                             y="score"
+                                            domain={{x: [0.0,1.0]}}
                                         />
+                                       
                                 </VictoryChart>
                             </div>
                             
@@ -221,8 +224,8 @@ const TopicTimeSeries: FunctionComponent = () : JSX.Element => {
                                     }}
                                     interpolation="natural"
                                     data={sample_data}
+                                    domain={{y:[0,10]}}
                                 />
-                   
                      
                 </VictoryChart>
             
