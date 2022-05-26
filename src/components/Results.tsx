@@ -121,9 +121,9 @@ export const Results = () => {
     
     const Tags = () => {
         return (
-            <>
-                {postEntities.entities.map(name => <span className="tag" style={{paddingLeft: '10px'}}><p className="is-size-3">{name}</p></span>)}
-            </>
+            <div className="tags are-large">
+                {postEntities.entities.map(name => <span className="tag is-danger is-light">{name}</span>)}
+            </div>
             
         )
     }
