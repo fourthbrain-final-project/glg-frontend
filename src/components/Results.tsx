@@ -108,7 +108,7 @@ export const Results = () => {
             .then((response) => response.data)
             .then((data) => {
                 setPostEntities({entities: data.entities});
-                console.log("entities: " + data.entities) ;
+                //console.log("entities: " + data.entities) ;
             })
             .catch((error) => {
                 console.log(error) ;
@@ -122,7 +122,7 @@ export const Results = () => {
     const Tags = () => {
         return (
             <>
-                {postEntities.entities.map(name => <span className="tag">{name}</span>)}
+                {postEntities.entities.map(name => <span className="tag" style={{paddingLeft: '10px'}}><p className="is-size-3">{name}</p></span>)}
             </>
             
         )
@@ -131,8 +131,9 @@ export const Results = () => {
     const Agent = () => {
         let agent = agents.get(postClassifier.label) || {uri: "other_agent.jpeg", phone: "333-444-5555", email: "testagainagain@fluently.dev", name: "Other Name", info: "Generalist"};
         let label = postClassifier.label || 'other' ;  
+        let document = globalState.state.document || 'other';
             return (
-                <RelevantAgent uri={agent.uri} phone={agent.phone} email={agent.email} name={agent.name} info={agent.info} label={label} tags={< Tags />}/>
+                <RelevantAgent uri={agent.uri} phone={agent.phone} email={agent.email} name={agent.name} info={agent.info} label={label} tags={< Tags />} entityLength={postEntities.entities.length} document={document}/>
             ) ;
         
     }
@@ -144,8 +145,8 @@ export const Results = () => {
             <Agent />
             <br />
             <div className="container is-fluid">
-                <div className="columns">
-                    <div className="column is-two-thirds" style={{
+                <div className="columns is-centered">
+                    <div className="column is-centered is-two-thirds" style={{
                         fontFamily:"Source Code Pro"
                     }}>
                         <div className="panel">
@@ -178,24 +179,6 @@ export const Results = () => {
                             
                         </div>
                     </div>
-                    <div className="column">
-                        <div className="panel">
-                            <p className="panel-heading has-text-centered" style={{
-                                    backgroundColor: "#933A16",
-                                    opacity: 0.8,
-                                    color: "white"
-                                }}>
-                                Submitted Query
-                            </p>
-                            <div className="panel-content is-flex-wrap-wrap">
-                                <div className="box">
-                                    <p>
-                                        {globalState.state.document}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <br />
@@ -220,31 +203,27 @@ type Topics = {
 }
 
 
-const TopicTimeSeries: FunctionComponent<Topics> = ({topics}) : JSX.Element => {
+
+const TopicTimeSeries: FunctionComponent = () : JSX.Element => {
+    const sample_data = [{x: 'Sat', y: 5}, {x: 'Sun', y: 3}, {x: 'Mon', y: 7}, {x: 'Tues', y: 2}, {x: 'Wed', y: 4}]
     return (
             
                     <VictoryChart
                     theme={VictoryTheme.material}     
                     >
-                    {
-                        topics.map( topic => 
-                        {
-                            return (
+                    
                                 <VictoryLine 
                                     style={{
-                                        data: { stroke: topic.stroke},
                                         parent: { border: "1px solid #ccc"},
                                         labels: {
                                             fontFamily: "Source Code Pro"
                                         }
                                     }}
-                                    name={topic.topic}
                                     interpolation="natural"
-                                    data={topic.series}
+                                    data={sample_data}
                                 />
-                            )
-                        })
-                    }
+                   
+                     
                 </VictoryChart>
             
         
@@ -258,24 +237,76 @@ type Agent = {
     name: string,
     info: string,
     label: string,
-    tags: JSX.Element
+    tags: JSX.Element,
+    entityLength: number ,
+    document: string ,
 }
 
-const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info, label, tags}) => {
+const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info, label, tags, entityLength, document}) => {
     return (
         <div className="container is-fluid" style={{
             fontFamily: "Source Code Pro"
         }}>
             <div className="columns is-mulitline">
+            <div className="column">
+                    <div className="panel">
+                        <p className="panel-heading has-text-centered" style={{
+                             backgroundColor: "#933A16",
+                             opacity: 0.8,
+                             color: "white"
+                        }}>
+                            Topic
+                        </p>
+                        
+                        <div className="panel-block is-justify-content-center">
+                            <div className="title is-1">{label}</div> 
+                            <div className="column"><TopicTimeSeries /></div>                                                                                                        
+                        </div>
+                          
+                    </div>
+                </div>
+                <div className="column">
+                    <div className="panel">
+                            <p className="panel-heading has-text-centered" style={{
+                                backgroundColor: "#933A16",
+                                opacity: 0.8,
+                                color: "white"
+                            }}>
+                                Named Entities
+                            </p>
+                            <div className="panel-block is-justify-content-center is-flex-wrap-wrap">
+                                <div className="title is-1">{entityLength}</div>
+                                
+                            </div>
+                            <div className="panel-block is-justify-content-center is-flex-wrap-wrap">{ tags }</div>
+                            
+                    </div>
+                    <div className="panel">
+                            <p className="panel-heading has-text-centered" style={{
+                                    backgroundColor: "#933A16",
+                                    opacity: 0.8,
+                                    color: "white"
+                                }}>
+                                Submitted Query
+                            </p>
+                            <div className="panel-content is-flex-wrap-wrap">
+                                <div className="box">
+                                    <p>
+                                        {document}
+                                    </p>
+                                </div>
+                            </div>
+                        </div> 
+                </div>
                 <div className="column is-one-fifth">
-                    
+
                             <div className="panel">
                                 <p className="panel-heading has-text-centered" style={{
                                         backgroundColor: "#933A16",
                                         opacity: 0.8,
                                         color: "white"
                                     }}>
-                                    Agent
+                                    Expert Contact
                                 </p>
                                 
                                 <div className="panel-block">
@@ -314,34 +345,7 @@ const RelevantAgent: FunctionComponent<Agent> = ({uri, phone, email, name, info,
                             </div>
                                 
                 </div>
-                <div className="column">
-                    <div className="panel">
-                        <p className="panel-heading has-text-centered" style={{
-                             backgroundColor: "#933A16",
-                             opacity: 0.8,
-                             color: "white"
-                        }}>
-                            Topic
-                        </p>
-                        <div className="panel-block is-justify-content-center">
-                            <div className="title is-1">{label}</div>                                                                                                              
-                        </div>
-                    </div>
-                </div>
-                <div className="column">
-                    <div className="panel">
-                            <p className="panel-heading has-text-centered" style={{
-                                backgroundColor: "#933A16",
-                                opacity: 0.8,
-                                color: "white"
-                            }}>
-                                Named Entities
-                            </p>
-                            <div className="panel-block is-justify-content-center is-flex-wrap-wrap">
-                                { tags }
-                            </div>
-                        </div> 
-                </div>
+            
             </div> 
                           
         </div>
