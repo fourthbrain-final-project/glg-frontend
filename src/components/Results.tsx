@@ -26,7 +26,7 @@ const sample_data = [
 ];
 
 const instance = axios.create({
-    baseURL: 'https://127.0.0.1:8443/',
+    baseURL: 'https://api.fluently.dev/',
     timeout: 50000,
     headers: {'Accept': 'application/json'}
 })
